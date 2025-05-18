@@ -1,0 +1,72 @@
+.landing-section {
+  max-width: 1200px;
+  margin: 2rem auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  padding: 2rem;
+}
+
+.landing-image {
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.landing-image img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.5s ease;
+}
+
+.landing-image:hover img {
+  transform: scale(1.03);
+}
+
+.landing-text {
+  flex: 1;
+  padding: 1rem;
+}
+
+.landing-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #64ffda;
+}
+
+.landing-text p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.landing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+}
+
+.cta-button {
+  background: #64ffda;
+  color: #020c1b;
+  border: none;
+  padding: 1rem 2rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(100, 255, 218, 0.4);
+}
