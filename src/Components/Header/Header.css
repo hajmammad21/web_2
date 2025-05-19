@@ -110,3 +110,27 @@
   z-index: 98;
   backdrop-filter: blur(3px);
 }
+@keyframes waveGlow {
+  0% { opacity: 0; transform: translateY(-20px); box-shadow: 0 0 0 rgba(100, 255, 218, 0); }
+  50% { box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3); }
+  100% { opacity: 1; transform: translateY(0); box-shadow: 0 2px 5px rgba(100, 255, 218, 0.1); }
+}
+
+.nav li {
+  margin: 1rem 0;
+  opacity: 0;
+  border-radius: 4px;
+}
+
+.side-menu.open .nav li {
+  animation: waveGlow 0.6s forwards;
+}
+
+.side-menu.open .nav li:nth-child(1) { animation-delay: 0.1s; }
+.side-menu.open .nav li:nth-child(2) { animation-delay: 0.2s; }
+.side-menu.open .nav li:nth-child(3) { animation-delay: 0.3s; }
+.side-menu.open .nav li:nth-child(4) { animation-delay: 0.4s; }
+.side-menu.open .nav li:nth-child(5) { animation-delay: 0.5s; }
+.side-menu.open .nav li:nth-child(6) { animation-delay: 0.6s; }
+.side-menu.open .nav li:nth-child(7) { animation-delay: 0.7s; }
+.side-menu.open .nav li:nth-child(8) { animation-delay: 0.8s; }
