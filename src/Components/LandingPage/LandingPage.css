@@ -70,3 +70,70 @@
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(100, 255, 218, 0.4);
 }
+/* Keyframes for animation */
+@keyframes fadeInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation classes */
+.animate-image {
+  animation: fadeInLeft 1s ease forwards;
+}
+
+.animate-text {
+  animation: fadeInRight 1s ease forwards;
+  animation-delay: 0.3s;
+}
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.staggered {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.staggered-delay-1 {
+  animation-delay: 0.2s;
+}
+
+.staggered-delay-2 {
+  animation-delay: 0.4s;
+}
+
+.staggered-delay-3 {
+  animation-delay: 0.6s;
+}
+
+.staggered-delay-4 {
+  animation-delay: 0.8s;
+}
+
+.staggered-delay-5 {
+  animation-delay: 1s;
+}
