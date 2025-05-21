@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaIdCard, FaUniversity } from 'react-icons/fa';
 import './SignUp.css';
 
-const SignUp = () => {
+const SignUp = ({ setActiveSection }) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -113,7 +113,10 @@ const SignUp = () => {
           </button>
 
           <div className="login-link">
-            Already have an account? <a href="#login">Log in</a>
+            Already have an account?{" "}
+            <button type="button" className="link-button" onClick={() => setActiveSection('login')}>
+              Log in
+            </button>
           </div>
         </form>
       </div>

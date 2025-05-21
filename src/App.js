@@ -15,9 +15,8 @@ function App() {
       
       <main className="main-content">
         {activeSection === 'home' && <LandingPage />}
-        {activeSection === 'login' && <Login />}
-        {activeSection === 'signup' && <SignUp />}
-        {/* Add other sections as needed */}
+        {activeSection === 'login' && <Login setActiveSection={setActiveSection} />}
+        {activeSection === 'signup' && <SignUp setActiveSection={setActiveSection} />}
       </main>
 
       <Footer />

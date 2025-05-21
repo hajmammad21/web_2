@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 
-const Login = () => {
+const Login = ({ setActiveSection }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -63,7 +63,10 @@ const Login = () => {
           </button>
           
           <div className="signup-link">
-            Don't have an account? <a href="#signup">Sign up</a>
+            Don't have an account?{" "}
+            <button type="button" className="link-button" onClick={() => setActiveSection('signup')}>
+              Sign up
+            </button>
           </div>
         </form>
         
