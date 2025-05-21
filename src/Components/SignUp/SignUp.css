@@ -99,6 +99,7 @@
 .select-input:focus {
   outline: none;
   border-bottom-color: #64ffda;
+  background: #112240;
 }
 
 .underline {
