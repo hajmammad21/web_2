@@ -5,12 +5,15 @@ import LandingPage from './Components/LandingPage/LandingPage';
 import Footer from './Components/Footer/Footer';
 import Login from './Components/Login/Login';
 import SignUp from './Components/SignUp/SignUp';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
 
   return (
     <div className="app">
+      <ToastContainer />
       <Header activeSection={activeSection} setActiveSection={setActiveSection} />
       
       <main className="main-content">

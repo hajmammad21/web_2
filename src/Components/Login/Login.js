@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { toast } from 'react-toastify';
 
 const Login = ({ setActiveSection }) => {
   const [email, setEmail] = useState('');
@@ -7,9 +8,17 @@ const Login = ({ setActiveSection }) => {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Logging in with:', { email, password, rememberMe });
-  };
+  e.preventDefault();
+  
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  
+  if (storedUser && storedUser.email === email && storedUser.password === password) {
+    console.log('Login successful');
+    toast.success('Welcome Back!');
+  } else {
+    toast.error('Invalid login credentials');
+  }
+};
 
   return (
     <div className="login-container">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaIdCard, FaUniversity } from 'react-icons/fa';
 import './SignUp.css';
+import { toast } from 'react-toastify';
 
 const SignUp = ({ setActiveSection }) => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,10 @@ const SignUp = ({ setActiveSection }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Sign Up Data:', formData);
+
+    localStorage.setItem('user', JSON.stringify(formData));
+
+    toast.success('Account created successfully!');
   };
 
   return (
