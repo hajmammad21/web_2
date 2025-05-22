@@ -9,8 +9,10 @@ const SignUp = ({ setActiveSection }) => {
     email: '',
     password: '',
     studentId: '',
-    department: 'computer_science'
+    department: 'computer_science',
   });
+
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,10 +24,14 @@ const SignUp = ({ setActiveSection }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!agreeToTerms) {
+      toast.error('You must agree to the Terms and Privacy Policy to create an account.');
+      return;
+    }
+
     console.log('Sign Up Data:', formData);
-
     localStorage.setItem('user', JSON.stringify(formData));
-
     toast.success('Account created successfully!');
   };
 
@@ -108,8 +114,14 @@ const SignUp = ({ setActiveSection }) => {
 
           <div className="form-options">
             <label className="checkbox-label">
-              <input type="checkbox" required />
-              <span>I agree to the <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a></span>
+              <input
+                type="checkbox"
+                checked={agreeToTerms}
+                onChange={() => setAgreeToTerms(!agreeToTerms)}
+              />
+              <span>
+                I agree to the <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>
+              </span>
             </label>
           </div>
 

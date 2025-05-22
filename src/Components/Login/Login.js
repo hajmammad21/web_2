@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { toast } from 'react-toastify';
 
@@ -7,18 +7,33 @@ const Login = ({ setActiveSection }) => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
+  // Load saved email if "remember me" was checked
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
   const handleSubmit = (e) => {
-  e.preventDefault();
-  
-  const storedUser = JSON.parse(localStorage.getItem('user'));
-  
-  if (storedUser && storedUser.email === email && storedUser.password === password) {
-    console.log('Login successful');
-    toast.success('Welcome Back!');
-  } else {
-    toast.error('Invalid login credentials');
-  }
-};
+    e.preventDefault();
+
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+
+    if (storedUser && storedUser.email === email && storedUser.password === password) {
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
+
+      console.log('Login successful');
+      toast.success('Welcome Back!');
+    } else {
+      toast.error('Invalid login credentials');
+    }
+  };
 
   return (
     <div className="login-container">
@@ -27,7 +42,7 @@ const Login = ({ setActiveSection }) => {
           <h2>Welcome Back</h2>
           <p>Sign in to access your account</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
             <label htmlFor="email">Email</label>
@@ -40,7 +55,7 @@ const Login = ({ setActiveSection }) => {
               required
             />
           </div>
-          
+
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
@@ -52,7 +67,7 @@ const Login = ({ setActiveSection }) => {
               required
             />
           </div>
-          
+
           <div className="form-options">
             <label className="remember-me">
               <input
@@ -66,19 +81,23 @@ const Login = ({ setActiveSection }) => {
               Forgot password?
             </a>
           </div>
-          
+
           <button type="submit" className="login-button">
             Sign In
           </button>
-          
+
           <div className="signup-link">
             Don't have an account?{" "}
-            <button type="button" className="link-button" onClick={() => setActiveSection('signup')}>
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => setActiveSection('signup')}
+            >
               Sign up
             </button>
           </div>
         </form>
-        
+
         <div className="social-login">
           <p>Or sign in with</p>
           <div className="social-icons">
