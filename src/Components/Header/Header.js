@@ -8,11 +8,11 @@ const Header = ({ activeSection, setActiveSection }) => {
     { id: 'home', name: 'Home' },
     { id: 'login', name: 'Login' },
     { id: 'signup', name: 'Sign Up' },
-    { id: 'aboutus', name: 'About Us' },
     { id: 'photos', name: 'Photos' },
-    { id: 'contactus', name: 'Contact Us' },
+    { id: 'studentnames', name: 'Students' },
     { id: 'aboutclass', name: 'About Class' },
-    { id: 'studentnames', name: 'Students' }
+    { id: 'aboutus', name: 'About Us' },
+    { id: 'contactus', name: 'Contact Us' }
   ];
 
   const toggleMenu = () => {

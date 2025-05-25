@@ -1,0 +1,126 @@
+.about-us-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #020c1b, #0a192f);
+  animation: fadeIn 1s ease;
+}
+
+.about-us-card {
+  background: rgba(23, 42, 69, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) 0.3s forwards;
+}
+
+.about-us-title {
+  color: #64ffda;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title-icon {
+  font-size: 1.8rem;
+  animation: pulse 2s infinite;
+}
+
+.about-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.about-item {
+  background: rgba(10, 25, 47, 0.6);
+  border-radius: 10px;
+  padding: 1.5rem;
+  border-left: 3px solid #64ffda;
+  transition: all 0.3s ease;
+}
+
+.about-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.about-icon {
+  color: #64ffda;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-item h3 {
+  color: #e6f1ff;
+  margin-bottom: 1rem;
+}
+
+.about-item p, .about-item ul {
+  color: #ccd6f6;
+  line-height: 1.6;
+}
+
+.about-item ul {
+  padding-left: 1.5rem;
+}
+
+.about-item li {
+  margin-bottom: 0.5rem;
+}
+
+.course-info {
+  background: rgba(10, 25, 47, 0.6);
+  border-radius: 10px;
+  padding: 1.5rem;
+  border-top: 3px solid #64ffda;
+}
+
+.course-info h3 {
+  color: #64ffda;
+  margin-bottom: 1rem;
+}
+
+.course-info p {
+  color: #ccd6f6;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .about-us-card {
+    padding: 2rem;
+  }
+  
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+}
