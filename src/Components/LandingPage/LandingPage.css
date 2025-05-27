@@ -101,7 +101,6 @@
   }
 }
 
-/* Animation classes */
 .animate-image {
   animation: fadeInLeft 1s ease forwards;
 }
