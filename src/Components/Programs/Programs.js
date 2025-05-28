@@ -1,5 +1,5 @@
 import React from 'react';
-import './Program.css';
+import './Programs.css';
 
 const Program = ({ setActiveSection }) => {
   const programs = [

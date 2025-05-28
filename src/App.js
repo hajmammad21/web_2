@@ -6,7 +6,7 @@ import Footer from './Components/Footer/Footer';
 import Login from './Components/Login/Login';
 import SignUp from './Components/SignUp/SignUp';
 import AboutUs from './Components/AboutUs/AboutUs';
-import Program from './Components/Program/Program';
+import Programs from './Components/Programs/Programs';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,11 +19,11 @@ function App() {
       <Header activeSection={activeSection} setActiveSection={setActiveSection} />
       
       <main className="main-content">
-        {activeSection === 'home' && <LandingPage />}
+        {activeSection === 'home' && <LandingPage setActiveSection={setActiveSection} />}
         {activeSection === 'login' && <Login setActiveSection={setActiveSection} />}
         {activeSection === 'signup' && <SignUp setActiveSection={setActiveSection} />}
         {activeSection === 'aboutus' && <AboutUs setActiveSection={setActiveSection} />}
-        {activeSection === 'program' && <Program setActiveSection={setActiveSection} />}
+        {activeSection === 'programs' && <Programs setActiveSection={setActiveSection} />}
       </main>
 
       <Footer />

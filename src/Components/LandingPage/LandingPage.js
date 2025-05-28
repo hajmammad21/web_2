@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './LandingPage.css';
 import landingImage from './men-hero.png';
 
-const LandingPage = () => {
+const LandingPage = ({ setActiveSection }) => {
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
@@ -32,7 +32,10 @@ const LandingPage = () => {
             <span>💻</span> Modern Labs
           </div>
         </div>
-        <button className={animate ? 'cta-button staggered staggered-delay-5' : 'cta-button'}>
+        <button
+          className={animate ? 'cta-button staggered staggered-delay-5' : 'cta-button'}
+          onClick={() => setActiveSection('programs')}
+        >
           Explore Programs
         </button>
       </div>
