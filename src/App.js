@@ -7,6 +7,7 @@ import Login from './Components/Login/Login';
 import SignUp from './Components/SignUp/SignUp';
 import AboutUs from './Components/AboutUs/AboutUs';
 import Programs from './Components/Programs/Programs';
+import ContactUs from './Components/ContactUs/ContactUs';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,6 +25,7 @@ function App() {
         {activeSection === 'signup' && <SignUp setActiveSection={setActiveSection} />}
         {activeSection === 'aboutus' && <AboutUs setActiveSection={setActiveSection} />}
         {activeSection === 'programs' && <Programs setActiveSection={setActiveSection} />}
+        {activeSection === 'contact' && <ContactUs setActiveSection={setActiveSection} />}
       </main>
 
       <Footer />
