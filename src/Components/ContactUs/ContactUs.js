@@ -13,10 +13,10 @@ const ContactUs = () => {
     setIsSubmitting(true);
 
     emailjs.sendForm(
-      'YOUR_SERVICE_ID',
-      'YOUR_TEMPLATE_ID',
+      'service_9omnd2h',
+      'template_lqx8jcd',
       form.current,
-      'YOUR_PUBLIC_KEY'
+      '7-98oDrJkS820zArY'
     )
     .then((result) => {
       toast.success('Message sent successfully!', {
