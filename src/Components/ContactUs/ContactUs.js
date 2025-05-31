@@ -96,15 +96,15 @@ const ContactUs = () => {
         <div className="contact-info">
           <div className="info-item">
             <i className="fas fa-envelope"></i>
-            <span>contact@yourdomain.com</span>
+            <span>info@khayyam.ac.ir</span>
           </div>
           <div className="info-item">
             <i className="fas fa-phone"></i>
-            <span>+1 (123) 456-7890</span>
+            <span>051 - 35156</span>
           </div>
           <div className="info-item">
             <i className="fas fa-map-marker-alt"></i>
-            <span>123 Tech Street, Digital City</span>
+            <span>Mashhad - Falahi 1 - Khayyam Univercity</span>
           </div>
         </div>
       </div>

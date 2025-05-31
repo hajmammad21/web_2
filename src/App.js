@@ -25,7 +25,7 @@ function App() {
         {activeSection === 'signup' && <SignUp setActiveSection={setActiveSection} />}
         {activeSection === 'aboutus' && <AboutUs setActiveSection={setActiveSection} />}
         {activeSection === 'programs' && <Programs setActiveSection={setActiveSection} />}
-        {activeSection === 'contact' && <ContactUs setActiveSection={setActiveSection} />}
+        {activeSection === 'contactus' && <ContactUs setActiveSection={setActiveSection} />}
       </main>
 
       <Footer />
