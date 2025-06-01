@@ -182,3 +182,8 @@
     font-size: 1.8rem;
   }
 }
+
+.input-group input{
+  position: relative;
+  left: 2vw;
+}

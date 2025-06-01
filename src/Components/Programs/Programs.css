@@ -54,6 +54,9 @@
   border: 1px solid rgba(100, 255, 218, 0.1);
   transition: all 0.3s ease;
   animation: fadeIn 0.8s ease both;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .program-item:nth-child(1) { animation-delay: 0.8s; }
