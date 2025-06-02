@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import './Gallery.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import techConferenceImg from '../../images/techconference.jpg';
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all');
-  
-  // Sample gallery data
+
   const galleryItems = [
-    { id: 1, category: 'events', src: 'https://source.unsplash.com/random/600x400/?event', title: 'Tech Conference 2023' },
+    { id: 1, category: 'events', src: techConferenceImg, title: 'Tech Conference 2025' },
     { id: 2, category: 'projects', src: 'https://source.unsplash.com/random/600x400/?coding', title: 'Web Development Project' },
     { id: 3, category: 'team', src: 'https://source.unsplash.com/random/600x400/?teamwork', title: 'Our Creative Team' },
     { id: 4, category: 'events', src: 'https://source.unsplash.com/random/600x400/?workshop', title: 'Design Workshop' },

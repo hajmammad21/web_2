@@ -121,13 +121,11 @@
   font-size: 0.8rem;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .gallery-card {
     padding: 2rem;
