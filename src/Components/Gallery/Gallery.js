@@ -6,6 +6,9 @@ import techConferenceImg from '../../images/techconference.jpg';
 import Ourcreativeteam from '../../images/Ourcreativeteam.jpg';
 import websitedevelopment from '../../images/webdevelop.jpg';
 import designworkshop from '../../images/designworkshop.jpg';
+import mobileapp from '../../images/mobileapp.jpg';
+import startup from '../../images/startup.jpg';
+import teamcollab from '../../images/teamcollaboration.jpg';
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -15,11 +18,11 @@ const Gallery = () => {
     { id: 2, category: 'projects', src: websitedevelopment, title: 'Web Development Project' },
     { id: 3, category: 'team', src: Ourcreativeteam, title: 'Our Creative Team' },
     { id: 4, category: 'events', src: designworkshop, title: 'Design Workshop' },
-    { id: 5, category: 'projects', src: 'https://source.unsplash.com/random/600x400/?app', title: 'Mobile App Launch' },
+    { id: 5, category: 'projects', src: mobileapp, title: 'Mobile App Launch' },
     { id: 6, category: 'team', src: 'https://source.unsplash.com/random/600x400/?office', title: 'Office Environment' },
     { id: 7, category: 'events', src: 'https://source.unsplash.com/random/600x400/?meetup', title: 'Community Meetup' },
-    { id: 8, category: 'projects', src: 'https://source.unsplash.com/random/600x400/?startup', title: 'Startup Project' },
-    { id: 9, category: 'team', src: 'https://source.unsplash.com/random/600x400/?business', title: 'Team Collaboration' },
+    { id: 8, category: 'projects', src: startup, title: 'Startup Project' },
+    { id: 9, category: 'team', src: teamcollab, title: 'Team Collaboration' },
   ];
 
   const filteredItems = activeCategory === 'all' 
