@@ -8,7 +8,7 @@ const Header = ({ activeSection, setActiveSection }) => {
     { id: 'home', name: 'Home' },
     { id: 'login', name: 'Login' },
     { id: 'signup', name: 'Sign Up' },
-    { id: 'photos', name: 'Photos' },
+    { id: 'gallery', name: 'Gallery' },
     { id: 'studentnames', name: 'Students' },
     { id: 'programs', name: 'Programs' },
     { id: 'aboutus', name: 'About Us' },

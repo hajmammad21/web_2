@@ -8,6 +8,7 @@ import SignUp from './Components/SignUp/SignUp';
 import AboutUs from './Components/AboutUs/AboutUs';
 import Programs from './Components/Programs/Programs';
 import ContactUs from './Components/ContactUs/ContactUs';
+import Gallery from './Components/Gallery/Gallery';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,6 +27,7 @@ function App() {
         {activeSection === 'aboutus' && <AboutUs setActiveSection={setActiveSection} />}
         {activeSection === 'programs' && <Programs setActiveSection={setActiveSection} />}
         {activeSection === 'contactus' && <ContactUs setActiveSection={setActiveSection} />}
+        {activeSection === 'gallery' && <Gallery />}
       </main>
 
       <Footer />
