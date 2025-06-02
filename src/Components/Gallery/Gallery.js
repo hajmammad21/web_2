@@ -3,14 +3,17 @@ import './Gallery.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import techConferenceImg from '../../images/techconference.jpg';
+import Ourcreativeteam from '../../images/Ourcreativeteam.jpg';
+import websitedevelopment from '../../images/website-development-project-plan.jpg';
+
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all');
 
   const galleryItems = [
     { id: 1, category: 'events', src: techConferenceImg, title: 'Tech Conference 2025' },
-    { id: 2, category: 'projects', src: 'https://source.unsplash.com/random/600x400/?coding', title: 'Web Development Project' },
-    { id: 3, category: 'team', src: 'https://source.unsplash.com/random/600x400/?teamwork', title: 'Our Creative Team' },
+    { id: 2, category: 'projects', src: websitedevelopment, title: 'Web Development Project' },
+    { id: 3, category: 'team', src: Ourcreativeteam, title: 'Our Creative Team' },
     { id: 4, category: 'events', src: 'https://source.unsplash.com/random/600x400/?workshop', title: 'Design Workshop' },
     { id: 5, category: 'projects', src: 'https://source.unsplash.com/random/600x400/?app', title: 'Mobile App Launch' },
     { id: 6, category: 'team', src: 'https://source.unsplash.com/random/600x400/?office', title: 'Office Environment' },
