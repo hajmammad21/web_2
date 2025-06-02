@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Gallery.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer,} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import techConferenceImg from '../../images/techconference.jpg';
 import Ourcreativeteam from '../../images/Ourcreativeteam.jpg';
@@ -14,6 +14,7 @@ import meetup from '../../images/meetup.jpg';
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const galleryItems = [
     { id: 1, category: 'events', src: techConferenceImg, title: 'Tech Conference 2025' },
@@ -31,11 +32,12 @@ const Gallery = () => {
     ? galleryItems 
     : galleryItems.filter(item => item.category === activeCategory);
 
-  const handleImageClick = (title) => {
-    toast.info(`Viewing: ${title}`, {
-      position: 'bottom-center',
-      autoClose: 2000,
-    });
+  const handleImageClick = (item) => {
+    setSelectedImage(item);
+  };
+
+  const closeLightbox = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -63,7 +65,7 @@ const Gallery = () => {
             <div 
               key={item.id} 
               className="gallery-item"
-              onClick={() => handleImageClick(item.title)}
+              onClick={() => handleImageClick(item)}
             >
               <img src={item.src} alt={item.title} />
               <div className="item-overlay">
@@ -74,6 +76,24 @@ const Gallery = () => {
           ))}
         </div>
       </div>
+
+      {selectedImage && (
+        <div className="lightbox-overlay" onClick={closeLightbox}>
+          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={closeLightbox}>&times;</button>
+            <img 
+              src={selectedImage.src} 
+              alt={selectedImage.title} 
+              className="lightbox-image"
+            />
+            <div className="lightbox-caption">
+              <h3>{selectedImage.title}</h3>
+              <span>{selectedImage.category}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ToastContainer />
     </div>
   );
