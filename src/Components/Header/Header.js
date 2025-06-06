@@ -4,10 +4,13 @@ import './Header.css';
 const Header = ({ activeSection, setActiveSection }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const authItems = [
+    { id: 'login', name: 'Login' },
+    { id: 'signup', name: 'Sign Up' }
+  ];
+
   const menuItems = [
     { id: 'home', name: 'Home' },
-    { id: 'login', name: 'Login' },
-    { id: 'signup', name: 'Sign Up' },
     { id: 'gallery', name: 'Gallery' },
     { id: 'studentnames', name: 'Students' },
     { id: 'programs', name: 'Programs' },
@@ -26,13 +29,26 @@ const Header = ({ activeSection, setActiveSection }) => {
 
   return (
     <header className="header">
-      <button className={`hamburger ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-      </button>
-      
-      <h1 className="logo">College Portal</h1>
+      <div className="header-left">
+        <button className={`hamburger ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+        <h1 className="logo">College Portal</h1>
+      </div>
+
+      <div className="header-right">
+        {authItems.map(item => (
+          <button
+            key={item.id}
+            className={`auth-btn ${activeSection === item.id ? 'active' : ''}`}
+            onClick={() => handleNavClick(item.id)}
+          >
+            {item.name}
+          </button>
+        ))}
+      </div>
 
       <div className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
         <nav className="nav">
