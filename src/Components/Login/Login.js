@@ -49,7 +49,7 @@ const Login = ({ setActiveSection }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: window.location.origin // Adjust as needed
+          redirectTo: window.location.origin
         }
       });
 
