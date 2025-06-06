@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { toast } from 'react-toastify';
+import { supabase } from '../../supabaseClient';
 
 const Login = ({ setActiveSection }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem('rememberedEmail');
@@ -15,22 +17,45 @@ const Login = ({ setActiveSection }) => {
     }
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const storedUser = JSON.parse(localStorage.getItem('user'));
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
 
-    if (storedUser && storedUser.email === email && storedUser.password === password) {
+      if (error) throw error;
+
       if (rememberMe) {
         localStorage.setItem('rememberedEmail', email);
       } else {
         localStorage.removeItem('rememberedEmail');
       }
 
-      console.log('Login successful');
       toast.success('Welcome Back!');
-    } else {
-      toast.error('Invalid login credentials');
+      console.log('Login successful', data);
+    } catch (error) {
+      toast.error(error.message || 'Invalid login credentials');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSocialLogin = async (provider) => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: window.location.origin // Adjust as needed
+        }
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      toast.error(error.message || 'Social login failed');
     }
   };
 
@@ -81,8 +106,12 @@ const Login = ({ setActiveSection }) => {
             </a>
           </div>
 
-          <button type="submit" className="login-button">
-            Sign In
+          <button 
+            type="submit" 
+            className="login-button"
+            disabled={loading}
+          >
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
 
           <div className="signup-link">
@@ -100,13 +129,22 @@ const Login = ({ setActiveSection }) => {
         <div className="social-login">
           <p>Or sign in with</p>
           <div className="social-icons">
-            <button className="social-icon google">
+            <button 
+              className="social-icon google"
+              onClick={() => handleSocialLogin('google')}
+            >
               <i className="fab fa-google"></i>
             </button>
-            <button className="social-icon facebook">
+            <button 
+              className="social-icon facebook"
+              onClick={() => handleSocialLogin('facebook')}
+            >
               <i className="fab fa-facebook-f"></i>
             </button>
-            <button className="social-icon github">
+            <button 
+              className="social-icon github"
+              onClick={() => handleSocialLogin('github')}
+            >
               <i className="fab fa-github"></i>
             </button>
           </div>
