@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaUser, FaEnvelope, FaLock, FaIdCard, FaUniversity } from 'react-icons/fa';
 import './SignUp.css';
 import { toast } from 'react-toastify';
+import { supabase } from '../../supabaseClient';
 
 const SignUp = ({ setActiveSection }) => {
   const [formData, setFormData] = useState({
@@ -22,18 +23,54 @@ const SignUp = ({ setActiveSection }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!agreeToTerms) {
-      toast.error('You must agree to the Terms and Privacy Policy to create an account.');
-      return;
-    }
+  if (!agreeToTerms) {
+    toast.error('You must agree to the Terms and Privacy Policy.');
+    return;
+  }
 
-    console.log('Sign Up Data:', formData);
-    localStorage.setItem('user', JSON.stringify(formData));
-    toast.success('Account created successfully!');
-  };
+  const { email, password, fullName, studentId, department } = formData;
+
+  if (password.length < 6 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+    toast.error('Password must be 6+ characters with at least 1 uppercase letter and 1 number');
+    return;
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: 'http://localhost:3000',
+        data: { full_name: fullName }
+      }
+    });
+
+    if (error) throw error;
+    if (!data.user?.id) throw new Error('No user ID returned');
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert([{
+        id: data.user.id,
+        full_name: fullName,
+        student_id: studentId,
+        department,
+        email
+      }]);
+
+    if (profileError) throw profileError;
+
+    toast.success('Account created! Check your email to confirm.');
+    
+  } catch (error) {
+    console.error('Signup error:', error);
+    toast.error(error.message || 'Failed to create account');
+  }
+};
+
 
   return (
     <div className="signup-container">
