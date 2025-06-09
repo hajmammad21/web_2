@@ -3,7 +3,7 @@ import './Login.css';
 import { toast } from 'react-toastify';
 import { supabase } from '../../supabaseClient';
 
-const Login = ({ setActiveSection }) => {
+const Login = ({ setActiveSection, onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -29,6 +29,7 @@ const Login = ({ setActiveSection }) => {
 
       if (error) throw error;
 
+      // Handle remember me functionality
       if (rememberMe) {
         localStorage.setItem('rememberedEmail', email);
       } else {
@@ -37,6 +38,13 @@ const Login = ({ setActiveSection }) => {
 
       toast.success('Welcome Back!');
       console.log('Login successful', data);
+      
+      // Call parent component's success handler or redirect
+      if (onLoginSuccess) {
+        onLoginSuccess(data.user);
+      }
+      // Alternative: You could redirect here or update global state
+      
     } catch (error) {
       toast.error(error.message || 'Invalid login credentials');
     } finally {
@@ -49,7 +57,7 @@ const Login = ({ setActiveSection }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: window.location.origin
+          redirectTo: `${window.location.origin}/dashboard` // Redirect to your dashboard
         }
       });
 

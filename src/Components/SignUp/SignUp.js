@@ -14,6 +14,7 @@ const SignUp = ({ setActiveSection }) => {
   });
 
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,54 +24,75 @@ const SignUp = ({ setActiveSection }) => {
     }));
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!agreeToTerms) {
-    toast.error('You must agree to the Terms and Privacy Policy.');
-    return;
-  }
+    if (!agreeToTerms) {
+      toast.error('You must agree to the Terms and Privacy Policy.');
+      return;
+    }
 
-  const { email, password, fullName, studentId, department } = formData;
+    const { email, password, fullName, studentId, department } = formData;
 
-  if (password.length < 6 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-    toast.error('Password must be 6+ characters with at least 1 uppercase letter and 1 number');
-    return;
-  }
+    if (password.length < 6 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      toast.error('Password must be 6+ characters with at least 1 uppercase letter and 1 number');
+      return;
+    }
 
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: 'http://localhost:3000',
-        data: { full_name: fullName }
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
+          data: { full_name: fullName }
+        }
+      });
+
+      if (error) throw error;
+      if (!data.user?.id) throw new Error('No user ID returned');
+
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([{
+          id: data.user.id,
+          full_name: fullName,
+          student_id: studentId,
+          department,
+          email
+        }]);
+
+      if (profileError) {
+        console.error('Profile creation error:', profileError);
+        throw profileError;
       }
-    });
 
-    if (error) throw error;
-    if (!data.user?.id) throw new Error('No user ID returned');
-
-    const { error: profileError } = await supabase
-      .from('profiles')
-      .insert([{
-        id: data.user.id,
-        full_name: fullName,
-        student_id: studentId,
-        department,
-        email
-      }]);
-
-    if (profileError) throw profileError;
-
-    toast.success('Account created! Check your email to confirm.');
-    
-  } catch (error) {
-    console.error('Signup error:', error);
-    toast.error(error.message || 'Failed to create account');
-  }
-};
-
+      toast.success('Account created! Check your email to confirm.');
+      
+      // Clear form after successful signup
+      setFormData({
+        fullName: '',
+        email: '',
+        password: '',
+        studentId: '',
+        department: 'computer_science',
+      });
+      setAgreeToTerms(false);
+      
+      // Optionally switch to login view
+      setTimeout(() => {
+        setActiveSection('login');
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Signup error:', error);
+      toast.error(error.message || 'Failed to create account');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="signup-container">
@@ -90,6 +112,7 @@ const handleSubmit = async (e) => {
               value={formData.fullName}
               onChange={handleChange}
               required
+              disabled={loading}
             />
             <div className="underline"></div>
           </div>
@@ -103,6 +126,7 @@ const handleSubmit = async (e) => {
               value={formData.email}
               onChange={handleChange}
               required
+              disabled={loading}
             />
             <div className="underline"></div>
           </div>
@@ -116,6 +140,7 @@ const handleSubmit = async (e) => {
               value={formData.password}
               onChange={handleChange}
               required
+              disabled={loading}
             />
             <div className="underline"></div>
           </div>
@@ -129,6 +154,7 @@ const handleSubmit = async (e) => {
               value={formData.studentId}
               onChange={handleChange}
               required
+              disabled={loading}
             />
             <div className="underline"></div>
           </div>
@@ -140,6 +166,7 @@ const handleSubmit = async (e) => {
               value={formData.department}
               onChange={handleChange}
               className="select-input"
+              disabled={loading}
             >
               <option value="computer_science">Computer Science</option>
               <option value="engineering">Engineering</option>
@@ -155,6 +182,7 @@ const handleSubmit = async (e) => {
                 type="checkbox"
                 checked={agreeToTerms}
                 onChange={() => setAgreeToTerms(!agreeToTerms)}
+                disabled={loading}
               />
               <span>
                 I agree to the <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>
@@ -162,13 +190,22 @@ const handleSubmit = async (e) => {
             </label>
           </div>
 
-          <button type="submit" className="signup-button">
-            Create Account
+          <button 
+            type="submit" 
+            className="signup-button"
+            disabled={loading}
+          >
+            {loading ? 'Creating Account...' : 'Create Account'}
           </button>
 
           <div className="login-link">
             Already have an account?{" "}
-            <button type="button" className="link-button" onClick={() => setActiveSection('login')}>
+            <button 
+              type="button" 
+              className="link-button" 
+              onClick={() => setActiveSection('login')}
+              disabled={loading}
+            >
               Log in
             </button>
           </div>
