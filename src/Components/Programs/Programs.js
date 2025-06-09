@@ -1,7 +1,11 @@
 import React from 'react';
+import { useCart } from '../../contexts/CartContext';
+import { toast } from 'react-toastify';
 import './Programs.css';
 
 const Program = ({ setActiveSection }) => {
+  const { addToCart } = useCart();
+
   const programs = [
     {
       id: 1,
@@ -47,6 +51,11 @@ const Program = ({ setActiveSection }) => {
     }
   ];
 
+  const handleBuyNow = (program) => {
+    addToCart(program);
+    toast.success(`${program.title} added to cart!`);
+  };
+
   return (
     <div className="program-container">
       <div className="program-card">
@@ -54,7 +63,6 @@ const Program = ({ setActiveSection }) => {
           <h2>Our Programs</h2>
           <p>Choose the path that fits your career goals</p>
         </div>
-
         <div className="program-grid">
           {programs.map((program) => (
             <div key={program.id} className="program-item">
@@ -63,7 +71,7 @@ const Program = ({ setActiveSection }) => {
                 <span className="program-level">{program.level}</span>
               </div>
               <p className="program-description">{program.description}</p>
-              
+             
               <div className="program-details">
                 <div className="detail-item">
                   <span className="detail-label">Duration:</span>
@@ -74,16 +82,14 @@ const Program = ({ setActiveSection }) => {
                   <span className="detail-value">{program.price}</span>
                 </div>
               </div>
-
               <ul className="program-features">
                 {program.features.map((feature, index) => (
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
-
-              <button 
+              <button
                 className="program-button"
-                onClick={() => setActiveSection('signup')}
+                onClick={() => handleBuyNow(program)}
               >
                 Buy Now
               </button>

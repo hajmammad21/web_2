@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import { toast } from 'react-toastify';
+import Cart from '../Cart/Cart';
 import './Header.css';
 
 const Header = ({ activeSection, setActiveSection, user, setUser }) => {
@@ -58,7 +59,8 @@ const Header = ({ activeSection, setActiveSection, user, setUser }) => {
         {user ? (
           <div className="user-section">
             <span className="user-email">{user.email}</span>
-            <button 
+            <Cart />
+            <button
               className={`auth-btn ${activeSection === 'dashboard' ? 'active' : ''}`}
               onClick={() => handleNavClick('dashboard')}
             >
