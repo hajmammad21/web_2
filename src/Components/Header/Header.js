@@ -13,12 +13,14 @@ const Header = ({ activeSection, setActiveSection, user, setUser }) => {
   
   const menuItems = [
     { id: 'home', name: 'Home' },
+    { id: 'dashboard', name: 'Dashboard' },
     { id: 'gallery', name: 'Gallery' },
     { id: 'studentnames', name: 'Students' },
     { id: 'programs', name: 'Programs' },
     { id: 'aboutus', name: 'About Us' },
     { id: 'contactus', name: 'Contact Us' }
   ];
+  
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

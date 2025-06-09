@@ -11,6 +11,7 @@ import Programs from './Components/Programs/Programs';
 import ContactUs from './Components/ContactUs/ContactUs';
 import Gallery from './Components/Gallery/Gallery';
 import Students from './Components/Students/Students';
+import Dashboard from './Components/Dashboard/Dashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -75,21 +76,28 @@ function App() {
         setUser={setUser}
       />
      
-      <main className="main-content">
+    <main className="main-content">
         {activeSection === 'home' && <LandingPage setActiveSection={setActiveSection} />}
         {activeSection === 'login' && (
-          <Login 
-            setActiveSection={setActiveSection}
-            onLoginSuccess={handleLoginSuccess}
-          />
-        )}
+    <Login
+        setActiveSection={setActiveSection}
+        onLoginSuccess={handleLoginSuccess}
+    />
+  )}
         {activeSection === 'signup' && <SignUp setActiveSection={setActiveSection} />}
         {activeSection === 'aboutus' && <AboutUs setActiveSection={setActiveSection} />}
         {activeSection === 'programs' && <Programs setActiveSection={setActiveSection} />}
         {activeSection === 'contactus' && <ContactUs setActiveSection={setActiveSection} />}
         {activeSection === 'studentnames' && <Students />}
         {activeSection === 'gallery' && <Gallery />}
-      </main>
+        {activeSection === 'dashboard' && (
+      <Dashboard 
+      user={user} 
+      setUser={setUser} 
+      setActiveSection={setActiveSection} 
+    />
+  )}
+</main>
       <Footer />
     </div>
   );

@@ -29,7 +29,6 @@ const Login = ({ setActiveSection, onLoginSuccess }) => {
 
       if (error) throw error;
 
-      // Handle remember me functionality
       if (rememberMe) {
         localStorage.setItem('rememberedEmail', email);
       } else {
@@ -38,12 +37,11 @@ const Login = ({ setActiveSection, onLoginSuccess }) => {
 
       toast.success('Welcome Back!');
       console.log('Login successful', data);
-      
-      // Call parent component's success handler or redirect
+
       if (onLoginSuccess) {
         onLoginSuccess(data.user);
       }
-      // Alternative: You could redirect here or update global state
+      setActiveSection('dashboard');
       
     } catch (error) {
       toast.error(error.message || 'Invalid login credentials');
@@ -57,7 +55,7 @@ const Login = ({ setActiveSection, onLoginSuccess }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard` // Redirect to your dashboard
+          redirectTo: `${window.location.origin}/dashboard`
         }
       });
 
