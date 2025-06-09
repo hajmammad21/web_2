@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../supabaseClient';
 import { toast } from 'react-toastify';
 import './Dashboard.css';
@@ -18,12 +18,14 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
-  useEffect(() => {
-    fetchUserProfile();
-  }, [user]);
+  const fetchUserProfile = useCallback(async () => {
+    if (!user?.id) {
+      console.error('No user ID available');
+      return;
+    }
 
-  const fetchUserProfile = async () => {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -42,11 +44,22 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
           full_name: data.full_name || '',
           phone: data.phone || ''
         }));
+      } else {
+        // If no profile data exists, keep the user data from auth
+        console.log('No profile data found, using auth data');
       }
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [user?.id]); // Only depend on user.id since that's what we actually use
+
+  useEffect(() => {
+    if (user?.id) {
+      fetchUserProfile();
+    }
+  }, [user?.id, fetchUserProfile]);
 
   const handleUpdateProfile = async () => {
     setLoading(true);
@@ -112,11 +125,17 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    if (!dateString) return 'Not available';
+    try {
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid date';
+    }
   };
 
   const tabs = [
@@ -124,6 +143,33 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
     { id: 'profile', name: 'Profile', icon: '👤' },
     { id: 'settings', name: 'Settings', icon: '⚙️' }
   ];
+
+  // Debug logging - remove in production
+  console.log('Dashboard render - user:', user);
+  console.log('Dashboard render - userProfile:', userProfile);
+
+  // Show loading state while fetching data
+  if (loading && !userProfile.email) {
+    return (
+      <div className="dashboard-container">
+        <div className="dashboard-header">
+          <h1>Loading Dashboard...</h1>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if no user
+  if (!user) {
+    return (
+      <div className="dashboard-container">
+        <div className="dashboard-header">
+          <h1>Error</h1>
+          <p>No user data available. Please log in again.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-container">
@@ -155,11 +201,15 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
               </div>
               <div className="stat-card">
                 <h3>Member Since</h3>
-                <p className="stat-value">{formatDate(userProfile.created_at)}</p>
+                <p className="stat-value">
+                  {userProfile.created_at ? formatDate(userProfile.created_at) : 'Not available'}
+                </p>
               </div>
               <div className="stat-card">
                 <h3>Email</h3>
-                <p className="stat-value">{userProfile.email}</p>
+                <p className="stat-value">
+                  {userProfile.email || user?.email || 'Not available'}
+                </p>
               </div>
               <div className="stat-card">
                 <h3>Username</h3>
@@ -220,7 +270,7 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
                 <label>Email</label>
                 <input
                   type="email"
-                  value={userProfile.email}
+                  value={userProfile.email || user?.email || ''}
                   disabled
                   className="form-input disabled"
                 />
