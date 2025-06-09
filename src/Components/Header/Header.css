@@ -213,3 +213,50 @@
 .side-menu.open .nav li:nth-child(4) { animation-delay: 0.25s; }
 .side-menu.open .nav li:nth-child(5) { animation-delay: 0.3s; }
 .side-menu.open .nav li:nth-child(6) { animation-delay: 0.35s; }
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.5rem;
+}
+
+.user-email {
+  color: #ccd6f6;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 5px rgba(204, 214, 246, 0.2);
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.user-email::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #64ffda, transparent);
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .user-section {
+    gap: 1rem;
+  }
+  
+  .user-email {
+    font-size: 0.9rem;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .logout-btn-alt {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
