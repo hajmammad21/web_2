@@ -5,23 +5,21 @@ import './Header.css';
 
 const Header = ({ activeSection, setActiveSection, user, setUser }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+ 
   const authItems = [
     { id: 'login', name: 'Login' },
     { id: 'signup', name: 'Sign Up' }
   ];
-  
+ 
   const menuItems = [
     { id: 'home', name: 'Home' },
-    { id: 'dashboard', name: 'Dashboard' },
     { id: 'gallery', name: 'Gallery' },
     { id: 'studentnames', name: 'Students' },
     { id: 'programs', name: 'Programs' },
     { id: 'aboutus', name: 'About Us' },
     { id: 'contactus', name: 'Contact Us' }
   ];
-  
-
+ 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -35,7 +33,7 @@ const Header = ({ activeSection, setActiveSection, user, setUser }) => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      
+     
       setUser(null);
       toast.success('Logged out successfully');
       setActiveSection('home');
@@ -55,11 +53,17 @@ const Header = ({ activeSection, setActiveSection, user, setUser }) => {
         </button>
         <h1 className="logo">College Portal</h1>
       </div>
-      
+     
       <div className="header-right">
         {user ? (
           <div className="user-section">
             <span className="user-email">{user.email}</span>
+            <button 
+              className={`auth-btn ${activeSection === 'dashboard' ? 'active' : ''}`}
+              onClick={() => handleNavClick('dashboard')}
+            >
+              Dashboard
+            </button>
             <button className="auth-btn logout-btn-alt" onClick={handleLogout}>
               Logout
             </button>
@@ -76,7 +80,7 @@ const Header = ({ activeSection, setActiveSection, user, setUser }) => {
           ))
         )}
       </div>
-      
+     
       <div className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
         <nav className="nav">
           <ul>
