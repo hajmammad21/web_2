@@ -14,76 +14,81 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
     phone: '',
     created_at: user?.created_at || ''
   });
+  useEffect(() => {
+  if (user) {
+    setUserProfile(prev => ({
+      ...prev,
+      id: user.id,
+      email: user.email,
+      created_at: user.created_at
+    }));
+  }
+}, [user]);
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
   const fetchUserProfile = useCallback(async () => {
-    if (!user?.id) {
-      console.error('No user ID available');
+  if (!user?.id) {
+    console.error('No user ID available');
+    return;
+  }
+
+  try {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      console.error('Error fetching profile:', error);
       return;
     }
 
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+    setUserProfile(prev => ({
+      ...prev,
+      id: user.id,
+      email: user.email,
+      created_at: user.created_at,
+      username: data?.username || '',
+      full_name: data?.full_name || '',
+      phone: data?.phone || ''
+    }));
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching profile:', error);
-        return;
-      }
+  } catch (error) {
+    console.error('Error:', error);
+  } finally {
+    setLoading(false);
+  }
+}, [user?.id, user?.email, user?.created_at]);
 
-      if (data) {
-        setUserProfile(prev => ({
-          ...prev,
-          username: data.username || '',
-          full_name: data.full_name || '',
-          phone: data.phone || ''
-        }));
-      } else {
-        // If no profile data exists, keep the user data from auth
-        console.log('No profile data found, using auth data');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [user?.id]); // Only depend on user.id since that's what we actually use
+const handleUpdateProfile = async () => {
+  setLoading(true);
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .upsert({
+        id: user.id,
+        username: userProfile.username,
+        full_name: userProfile.full_name,
+        phone: userProfile.phone
+      }, {
+        onConflict: 'id',
+        ignoreDuplicates: false
+      });
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchUserProfile();
-    }
-  }, [user?.id, fetchUserProfile]);
+    if (error) throw error;
 
-  const handleUpdateProfile = async () => {
-    setLoading(true);
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .upsert({
-          id: user.id,
-          username: userProfile.username,
-          full_name: userProfile.full_name,
-          phone: userProfile.phone,
-          updated_at: new Date().toISOString()
-        });
-
-      if (error) throw error;
-
-      toast.success('Profile updated successfully!');
-      setIsEditing(false);
-    } catch (error) {
-      toast.error('Error updating profile: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    toast.success('Profile updated successfully!');
+    setIsEditing(false);
+  } catch (error) {
+    toast.error('Error updating profile: ' + error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleDeleteAccount = async () => {
     if (deleteConfirmation !== 'DELETE') {
@@ -144,11 +149,9 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
     { id: 'settings', name: 'Settings', icon: '⚙️' }
   ];
 
-  // Debug logging - remove in production
   console.log('Dashboard render - user:', user);
   console.log('Dashboard render - userProfile:', userProfile);
 
-  // Show loading state while fetching data
   if (loading && !userProfile.email) {
     return (
       <div className="dashboard-container">
@@ -159,7 +162,6 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
     );
   }
 
-  // Show error state if no user
   if (!user) {
     return (
       <div className="dashboard-container">
@@ -193,55 +195,152 @@ const Dashboard = ({ user, setUser, setActiveSection }) => {
 
       <div className="dashboard-content">
         {activeTab === 'overview' && (
-          <div className="overview-section">
-            <div className="stats-grid">
-              <div className="stat-card">
-                <h3>Account Status</h3>
-                <p className="stat-value active">Active</p>
-              </div>
-              <div className="stat-card">
-                <h3>Member Since</h3>
-                <p className="stat-value">
-                  {userProfile.created_at ? formatDate(userProfile.created_at) : 'Not available'}
-                </p>
-              </div>
-              <div className="stat-card">
-                <h3>Email</h3>
-                <p className="stat-value">
-                  {userProfile.email || user?.email || 'Not available'}
-                </p>
-              </div>
-              <div className="stat-card">
-                <h3>Username</h3>
-                <p className="stat-value">{userProfile.username || 'Not set'}</p>
-              </div>
-            </div>
+  <div className="overview-section">
+    {/* Welcome Banner */}
+    <div className="welcome-banner">
+      <div className="welcome-content">
+        <h2>Welcome back, {userProfile.full_name || userProfile.username || 'User'}! 👋</h2>
+        <p>Here's what's happening with your account today</p>
+      </div>
+      <div className="welcome-time">
+        <p>{new Date().toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        })}</p>
+      </div>
+    </div>
 
-            <div className="quick-actions">
-              <h3>Quick Actions</h3>
-              <div className="action-buttons">
-                <button 
-                  className="action-btn primary"
-                  onClick={() => setActiveTab('profile')}
-                >
-                  Edit Profile
-                </button>
-                <button 
-                  className="action-btn secondary"
-                  onClick={() => setActiveSection('studentnames')}
-                >
-                  View Students
-                </button>
-                <button 
-                  className="action-btn secondary"
-                  onClick={() => setActiveSection('programs')}
-                >
-                  Browse Programs
-                </button>
-              </div>
+    {/* Quick Stats Cards */}
+    <div className="stats-grid">
+      <div className="stat-card gradient-blue">
+        <div className="stat-icon">📚</div>
+        <div className="stat-info">
+          <h3>Programs Enrolled</h3>
+          <p className="stat-value">3</p>
+          <small>+1 this month</small>
+        </div>
+      </div>
+      
+      <div className="stat-card gradient-green">
+        <div className="stat-icon">🎯</div>
+        <div className="stat-info">
+          <h3>Goals Completed</h3>
+          <p className="stat-value">12</p>
+          <small>85% completion rate</small>
+        </div>
+      </div>
+      
+      <div className="stat-card gradient-purple">
+        <div className="stat-icon">⭐</div>
+        <div className="stat-info">
+          <h3>Achievement Points</h3>
+          <p className="stat-value">1,250</p>
+          <small>Level 5 Scholar</small>
+        </div>
+      </div>
+      
+      <div className="stat-card gradient-orange">
+        <div className="stat-icon">🔥</div>
+        <div className="stat-info">
+          <h3>Current Streak</h3>
+          <p className="stat-value">7 days</p>
+          <small>Keep it up!</small>
+        </div>
+      </div>
+    </div>
+
+    {/* Recent Activity & Quick Actions */}
+    <div className="dashboard-grid">
+      <div className="activity-feed">
+        <h3>Recent Activity</h3>
+        <div className="activity-list">
+          <div className="activity-item">
+            <div className="activity-icon">📖</div>
+            <div className="activity-content">
+              <p><strong>Completed</strong> "Introduction to React"</p>
+              <small>2 hours ago</small>
             </div>
           </div>
-        )}
+          <div className="activity-item">
+            <div className="activity-icon">👥</div>
+            <div className="activity-content">
+              <p><strong>Joined</strong> study group "Advanced JavaScript"</p>
+              <small>Yesterday</small>
+            </div>
+          </div>
+          <div className="activity-item">
+            <div className="activity-icon">🏆</div>
+            <div className="activity-content">
+              <p><strong>Earned</strong> "Quick Learner" badge</p>
+              <small>3 days ago</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="quick-actions-modern">
+        <h3>Quick Actions</h3>
+        <div className="action-grid">
+          <button 
+            className="action-card"
+            onClick={() => setActiveSection('programs')}
+          >
+            <div className="action-icon">🚀</div>
+            <span>Browse Programs</span>
+          </button>
+          <button 
+            className="action-card"
+            onClick={() => setActiveSection('studentnames')}
+          >
+            <div className="action-icon">👨‍🎓</div>
+            <span>View Students</span>
+          </button>
+          <button 
+            className="action-card"
+            onClick={() => setActiveTab('profile')}
+          >
+            <div className="action-icon">⚙️</div>
+            <span>Edit Profile</span>
+          </button>
+          <button className="action-card">
+            <div className="action-icon">📊</div>
+            <span>View Progress</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Progress Section */}
+    <div className="progress-section">
+      <h3>Your Learning Journey</h3>
+      <div className="progress-cards">
+        <div className="progress-card">
+          <div className="progress-header">
+            <h4>React Fundamentals</h4>
+            <span className="progress-percentage">75%</span>
+          </div>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{width: '75%'}}></div>
+          </div>
+          <p>3 of 4 modules completed</p>
+        </div>
+        
+        <div className="progress-card">
+          <div className="progress-header">
+            <h4>JavaScript Advanced</h4>
+            <span className="progress-percentage">45%</span>
+          </div>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{width: '45%'}}></div>
+          </div>
+          <p>9 of 20 lessons completed</p>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
 
         {activeTab === 'profile' && (
           <div className="profile-section">
