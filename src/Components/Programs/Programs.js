@@ -19,7 +19,7 @@ const Program = ({ setActiveSection }) => {
   const programs = [
     {
       id: 1,
-      title: "Full-Stack Web Development",
+      title: "Web Development",
       description: "Master modern web development with React, Node.js, MongoDB, and cloud deployment. Build real-world applications from scratch.",
       duration: "16 Weeks",
       level: "Intermediate",
@@ -41,7 +41,7 @@ const Program = ({ setActiveSection }) => {
     },
     {
       id: 2,
-      title: "Data Science & Machine Learning",
+      title: "Machine Learning",
       description: "Comprehensive data science program covering Python, R, ML algorithms, and AI fundamentals with industry projects.",
       duration: "20 Weeks",
       level: "Beginner",
@@ -85,7 +85,7 @@ const Program = ({ setActiveSection }) => {
     },
     {
       id: 4,
-      title: "Artificial Intelligence Bootcamp",
+      title: "Artificial Intelligence",
       description: "Dive deep into AI and neural networks. Learn TensorFlow, PyTorch, and build intelligent applications.",
       duration: "18 Weeks",
       level: "Advanced",
@@ -129,7 +129,7 @@ const Program = ({ setActiveSection }) => {
     },
     {
       id: 6,
-      title: "Mobile App Development",
+      title: "Mobile Development",
       description: "Build native iOS and Android apps using React Native and Swift/Kotlin. Deploy to app stores successfully.",
       duration: "15 Weeks",
       level: "Intermediate",
@@ -151,7 +151,7 @@ const Program = ({ setActiveSection }) => {
     },
     {
       id: 7,
-      title: "Digital Marketing Analytics",
+      title: "Digital Marketing",
       description: "Master digital marketing with data-driven strategies. Learn SEO, PPC, social media, and conversion optimization.",
       duration: "10 Weeks",
       level: "Beginner",
@@ -173,7 +173,7 @@ const Program = ({ setActiveSection }) => {
     },
     {
       id: 8,
-      title: "Creative Photography & Editing",
+      title: "Creative Photography",
       description: "Master photography techniques and post-processing. Learn composition, lighting, and advanced editing workflows.",
       duration: "8 Weeks",
       level: "All Levels",
